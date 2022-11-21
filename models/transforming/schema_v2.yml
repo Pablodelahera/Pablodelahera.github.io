@@ -2,14 +2,14 @@
 version: 2
 
 models:
-    - name: dim_customer
+    - name: fct_pre_customer
       description: "Tabla de dimensión del cliente"
       columns:
           - name: id
             description: "Clave primaria de la tabla"
             tests:
              - relationships:
-                to: ref('customer')
+                to: ref('stg_customer')
                 field: id
           - name: nombre
             description: "Nombre del cliente"
@@ -20,7 +20,7 @@ models:
             description: "id del pais, clave secundaria"
             tests:
              - relationships:
-                to: ref('nation')
+                to: ref('stg_nation')
                 field: id       
           - name: first_fecha
             description: "primera fecha registrada"
@@ -47,14 +47,14 @@ models:
             description: "Nombre del país al que pertenece el cliente"
             tests:
                 - not_null   
-    - name: fct_lineitem
+    - name: fct_lineitem_operations
       description: "Tabla de resultados relevantes de los pedidos"
       columns:
           - name: order_id
             description: "Clave primaria de la tabla"
             tests:
              - relationships:
-                to: ref('order')
+                to: ref('stg_order')
                 field: id
           - name: sum_qty
             description: "Cantidad de articulos del pedido"
@@ -90,20 +90,20 @@ models:
             description: "Cantidad de articulos del pedido"
             tests:
                 - not_null   
-    - name: dim_lineitem
+    - name: fct_lineitem_dates
       description: "Tabla de fechas de pedido-cliente"
       columns:
           - name: customer_id
             description: "id del cliente, clave secundaria"
             tests:
              - relationships:
-                to: ref('customer')
+                to: ref('stg_customer')
                 field: id
           - name: order_id
             description: "id del pedido, clave secundaria"
             tests:
              - relationships:
-                to: ref('orders')
+                to: ref('stg_orders')
                 field: id      
           - name: NUMBER_OF_ARTS
             description: "Cantidad de articulos del pedido"
@@ -128,7 +128,7 @@ models:
             description: "clave primaria de la tabla"
             tests:
              - relationships:
-                to: ref('nation')
+                to: ref('stg_nation')
                 field: id 
           - name: nombre_nacion
             description: "Nombre del país"
@@ -139,32 +139,32 @@ models:
             description: "Clave secundaria, id de la region"
             tests:
              - relationships:
-                to: ref('region')
+                to: ref('stg_region')
                 field: id
           - name: nombre_region
             description: "Nombre del continente"
             tests:
                 - not_null                
-    - name: partsupp_min
+    - name: fct_pre_partsupp
       description: "Tabla de información de la relación artículo-proveedor"
       columns:
           - name: art_id
             description: "id del artículo, clave secundaria"
             tests:
              - relationships:
-                to: ref('partsupp')
+                to: ref('stg_partsupp')
                 field: art_id
           - name: proveedor_id
             description: "id del proveedor, clave secundaria"
             tests:
              - relationships:
-                to: ref('partsupp')
+                to: ref('stg_partsupp')
                 field: proveedor_id 
           - name: min_coste
             description: "mínimo coste de suministro del articulo"
             tests:
                 - not_null    
-    - name: pedidos_pais
+    - name: fct_pedidos_pais
       description: "Tabla de información relevante de los pedidos de los países"
       columns:
           - name: nombre_nacion

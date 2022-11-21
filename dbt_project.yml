@@ -34,27 +34,34 @@ models:
   jaffle_shop:
     staging:
       +materialized: table
-      customer:
+      stg_customer:
         alias: CUSTOMERS
-      nation:
-      region:
-      supplier:
-      lineitem:
-      part:
-      partsupp:
+      stg_nation:
+      stg_region:
+      stg_supplier:
+      stg_lineitem:
+      stg_part:
+      stg_partsupp:
       +materialized: incremental
-      orders:
+      stg_orders:
     transforming:
       +materialized: table
-      dim_customer:  
+      fct_pre_customer:  
       nation_region:
-      fct_lineitem:
-      dim_lineitem:
-      partsupp_min:
-      pedidos_pais:
+      fct_lineitem_dates:
+      fct_lineitem_operations:
+      fct_pre_partsupp:
+      fct_pedidos_pais:
     Business:
-      +materialized: table
-      final_customer:  
-      final_orders:  
-      min_partsupp:
+      dim:
+       +materialized: table
+       dim_customer:
+       dim_part:
+       dim_partsupp:
+       dim_suplier:
+      fact:
+       +materialized: table
+       fct_customer:  
+       fct_orders:  
+       fct_partsupp:
         

@@ -7,7 +7,7 @@ with customer_order as(
         max(o.fecha) as most_recent_fecha,
         coalesce(count(o.id),0) as number_of_orders,
         sum(o.precio_total) as gasto_pedidos
-    from {{ref('orders')}} o 
+    from {{ref('stg_orders')}} o 
     where o.estado != 'F'
     group by 1
 )
@@ -21,7 +21,7 @@ final as (
        co.number_of_orders,
        co.gasto_pedidos,
     case when c.balance > 0 then 'Positivo' else 'Negativo' end Saldo_cuenta
-    from customer_order co left join {{ref('customer')}} c on co.customer_id = c.id
+    from customer_order co left join {{ref('stg_customer')}} c on co.customer_id = c.id
     order by id
 )
 
