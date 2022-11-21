@@ -11,7 +11,7 @@ with clientes_fin as (
     dc.NOMBRE_NACION,
 pp.PEDIDOS_PAIS,
 pp.GASTO_MEDIO_PAIS
-from {{ ref('dim_customer') }} dc left join {{ ref('pedidos_pais') }} pp on dc.NOMBRE_NACION = pp.NOMBRE_NACION
+from {{ ref('fct_pre_customer') }} dc left join {{ ref('fct_pedidos_pais') }} pp on dc.NOMBRE_NACION = pp.NOMBRE_NACION
 )
 
 select * from clientes_fin order by gasto_pedidos desc

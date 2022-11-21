@@ -2,7 +2,7 @@
 version: 2
 
 models:
-    - name: customer
+    - name: stg_customer
       description: "Tabla de información del cliente"
       columns:
           - name: id
@@ -24,7 +24,7 @@ models:
             tests:
              - relationships:
                 to: ref('stg_nation')
-                field: nation_id
+                field: id
           - name: telefono
             description: "Telefono del cliente"
             tests:
@@ -49,7 +49,7 @@ models:
             tests:
                 - not_null     
 
-    - name: orders
+    - name: stg_orders
       description: "Tabla de información del pedido"
       columns:
           - name: id
@@ -61,7 +61,7 @@ models:
             description: "id del cliente, clave secundaria"
             tests:
              - relationships:
-                to: ref('customer')
+                to: ref('stg_customer')
                 field: id 
           - name: estado
             description: "estado del pedido"
@@ -102,7 +102,7 @@ models:
             tests:
                 - not_null
 
-    - name: nation
+    - name: stg_nation
       description: "Tabla de información de los países"
       columns:
           - name: id
@@ -114,7 +114,7 @@ models:
             description: "id de la region(continente), clave secundaria"
             tests:
              - relationships:
-                to: ref('region')
+                to: ref('stg_region')
                 field: id 
           - name: nombre_nacion
             description: "Nombre del país"
@@ -126,7 +126,7 @@ models:
             tests:
                 - unique    
                 - not_null
-    - name: region
+    - name: stg_region
       description: "Tabla de información de los continentes"
       columns:
           - name: id
@@ -144,7 +144,7 @@ models:
             tests:
                 - not_null
                 - unique 
-    - name: supplier
+    - name: stg_supplier
       description: "Tabla de información de los proveedores"
       columns:
           - name: id
@@ -165,7 +165,7 @@ models:
             description: "id del pais, clave secundaria"
             tests:
              - relationships:
-                to: ref('nation')
+                to: ref('stg_nation')
                 field: id    
           - name: telefono_prov
             description: "Telefono del proveedor"
@@ -181,7 +181,7 @@ models:
             tests:
                 - not_null
                 - unique
-    - name: part
+    - name: stg_part
       description: "Tabla de información de los articulos"
       columns:
           - name: id
@@ -219,20 +219,20 @@ models:
             description: "comentarios de interés"
             tests:
                 - not_null     
-    - name: partsupp
+    - name: stg_partsupp
       description: "Tabla de información de la relación artículo-proveedor"
       columns:
           - name: art_id
             description: "id del artículo, clave secundaria"
             tests:
              - relationships:
-                to: ref('part')
+                to: ref('stg_part')
                 field: id
           - name: proveedor_id
             description: "id del proveedor, clave secundaria"
             tests:
              - relationships:
-                to: ref('suplier')
+                to: ref('stg_suplier')
                 field: id  
           - name: cantidad_disponible
             description: "cantidad de un mismo articulo que dispone un proveedor concreto"
@@ -246,26 +246,26 @@ models:
             description: "comentarios de interés"
             tests:
                 - not_null
-    - name: lineitem
+    - name: stg_lineitem
       description: "Tabla de información de los presupuestos"
       columns:
           - name: order_id
             description: "id del pedido, clave secundaria"
             tests:
              - relationships:
-                to: ref('order')
+                to: ref('stg_order')
                 field: id
           - name: art_id
             description: "id del artículo, clave secundaria"
             tests:
              - relationships:
-                to: ref('part')
+                to: ref('stg_part')
                 field: id                
           - name: proveedor_id
             description: "id del proveedor, clave secundaria"
             tests:
              - relationships:
-                to: ref('suplier')
+                to: ref('stg_suplier')
                 field: id  
           - name: numero_presupuesto
             description: "numero del presupuesto de un mismo pedido"

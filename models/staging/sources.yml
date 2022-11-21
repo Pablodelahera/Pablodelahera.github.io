@@ -13,9 +13,4 @@ sources:
       - name: partsupp
       - name: region
       - name: supplier
-#  - name: staging_1
-#    database: EJERCICIO_FINAL
-#    schema: DBT_PJIMENEZ
-#    tables:
-#      - name: orders
       

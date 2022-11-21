@@ -12,7 +12,7 @@
        avg(impuesto) as avg_imp,
        count(*) as count_art
  from
-       {{ ref('lineitem') }}
+       {{ ref('stg_lineitem') }}
  where
        estado != 'F'
  group by

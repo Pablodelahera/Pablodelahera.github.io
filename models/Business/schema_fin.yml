@@ -2,14 +2,14 @@
 version: 2
 
 models:
-    - name: final_customer
+    - name: fct_customer
       description: "Tabla final de información relevante del cliente"
       columns:
           - name: id
             description: "Clave primaria de la tabla"
             tests:
              - relationships:
-                to: ref('dim_customer')
+                to: ref('fct_pre_customer')
                 field: id
           - name: nombre
             description: "Nombre del cliente"
@@ -48,20 +48,20 @@ models:
           - name: gasto_medio_país
             description: "Gasto medio del total de pedidos del cliente según el país"
             tests:    
-    - name: final_orders
+    - name: fct_orders
       description: "Tabla final de información relevante de los pedidos"
       columns:
           - name: customer_id
             description: "id del cliente, clave secundaria"
             tests:
              - relationships:
-                to: ref('dim_lineitem')
+                to: ref('fct_lineitem_dates')
                 field: customer_id
           - name: order_id
             description: "Clave primaria de la tabla"
             tests:
              - relationships:
-                to: ref('fct_lineitem')
+                to: ref('fct_lineitem_operations')
                 field: order_id
           - name: sum_qty
             description: "Cantidad de articulos del pedido"
@@ -109,22 +109,173 @@ models:
             description: "Cantidad de dias total que tarda el cliente en recibir el pedido completo"
             tests:
                 - not_null  
-    - name: min_partsupp
+    - name: fct_partsupp
       description: "Tabla de información de la relación artículo-proveedor"
       columns:
           - name: art_id
             description: "id del artículo, clave secundaria"
             tests:
              - relationships:
-                to: ref('partsupp_min')
+                to: ref('fct_pre_partsupp')
                 field: art_id
           - name: proveedor_id
             description: "id del proveedor, clave secundaria"
             tests:
              - relationships:
-                to: ref('partsupp_min')
+                to: ref('fct_pre_partsupp')
                 field: proveedor_id 
+          - name: pais_proveedor
+            description: "Nombre del país del proveedor"
+            tests:
+                - not_null    
+          - name: region_proveedor
+            description: "Nombre del continente del proveedor"
+            tests:
+                - not_null        
           - name: min_coste
-            description: "mínimo coste de suministro del articulo"
+            description: "Mínimo coste de suministro del articulo"
             tests:
                 - not_null             
+    - name: dim_customer
+      description: "Tabla de dimensión final de los clientes con su nacionalidad"
+      columns:
+          - name: id
+            description: "Clave primaria de la tabla"
+            tests:
+                - unique
+                - not_null
+          - name: nombre
+            description: "Nombre del cliente"
+            tests:
+                - unique
+                - not_null 
+          - name: direccion
+            description: "Direccion del cliente"
+            tests:
+                - not_null   
+          - name: telefono
+            description: "Telefono del cliente"
+            tests:
+                - unique
+                - not_null
+          - name: balance
+            description: "Saldo de la cuenta del cliente"
+            tests:
+                - not_null
+          - name: departamento
+            description: "Seccion a la que pertenece el cliente"
+            tests:
+             - accepted_values:
+                 values:
+                   - BUILDING
+                   - MACHINERY
+                   - HOUSEHOLD
+                   - FURNITURE
+                   - AUTOMOBILE         
+          - name: nombre_nacion
+            description: "Nombre del país del cliente"
+            tests:
+                - not_null    
+          - name: nombre_region
+            description: "Nombre del continente del cliente"
+            tests:
+                - not_null       
+    - name: dim_part
+      description: "Tabla de dimensión final de los artículos"
+      columns:
+          - name: id
+            description: "Clave primaria de la tabla"
+            tests:
+                - unique
+                - not_null
+          - name: nombre_art
+            description: "Nombre del artículo"
+            tests:
+                - not_null  
+          - name: grupo_manufactura
+            description: "Grupo de manufacturación al que pertenece"
+            tests:
+                - not_null
+          - name: marca
+            description: "Marca del artículo"
+            tests:
+                - not_null
+          - name: tipo_art
+            description: "Tipo de artículo"
+            tests:
+                - not_null 
+          - name: tamanho
+            description: "Tamaño del artículo"
+            tests:     
+          - name: contenedor_art
+            description: "Contenedor al que pertenece segun el tipo de artículo que sea"
+            tests:
+          - name: precio_venta
+            description: "Precio de venta al público"
+            tests:
+                - not_null   
+    - name: dim_partsupp
+      description: "Tabla de dimensión final de la relación articulo-proveedor con las nacionalidades de estos"
+      columns:       
+          - name: art_id
+            description: "id del artículo, clave secundaria"
+            tests:
+             - relationships:
+                to: ref('stg_partsupp')
+                field: art_id
+          - name: proveedor_id
+            description: "id del proveedor, clave secundaria"
+            tests:
+             - relationships:
+                to: ref('stg_partsupp')
+                field: proveedor_id  
+          - name: cantidad_disponible
+            description: "cantidad de un mismo articulo que dispone un proveedor concreto"
+            tests:
+                - not_null
+          - name: coste_suministro
+            description: "coste de suministro del articulo"
+            tests:
+                - not_null                       
+          - name: nombre_nacion
+            description: "Nombre del país del proveedor"
+            tests:
+                - not_null    
+          - name: nombre_region
+            description: "Nombre del continente del proveedor"
+            tests:
+                - not_null  
+    - name: dim_suplier
+      description: "Tabla de dimensión final de los proveedores con sus nacionalidades"
+      columns:       
+          - name: id
+            description: "Clave primaria de la tabla"
+            tests:
+                - unique
+                - not_null
+          - name: nombre_prov
+            description: "Nombre del proveedor"
+            tests:
+                - not_null
+                - unique  
+          - name: direccion_prov
+            description: "Dirección del proveedor"
+            tests:
+                - not_null    
+          - name: telefono_prov
+            description: "Telefono del proveedor"
+            tests:
+                - not_null
+                - unique  
+          - name: balance_prov
+            description: "Saldo de la cuenta del proveedor"
+            tests:
+                - not_null      
+          - name: nombre_nacion
+            description: "Nombre del país del proveedor"
+            tests:
+                - not_null     
+          - name: nombre_region
+            description: "Nombre del continente del proveedor"
+            tests:
+                - not_null                                                  
