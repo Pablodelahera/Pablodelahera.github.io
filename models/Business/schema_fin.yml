@@ -1,0 +1,130 @@
+
+version: 2
+
+models:
+    - name: final_customer
+      description: "Tabla final de información relevante del cliente"
+      columns:
+          - name: id
+            description: "Clave primaria de la tabla"
+            tests:
+             - relationships:
+                to: ref('dim_customer')
+                field: id
+          - name: nombre
+            description: "Nombre del cliente"
+            tests:
+                - unique
+                - not_null    
+          - name: first_fecha
+            description: "primera fecha registrada"
+            tests:   
+          - name: most_recent_fecha
+            description: "fecha más actual"
+            tests:
+          - name: number_of_orders
+            description: "número de pedidos"
+            tests:
+                - not_null
+          - name: gasto_pedidos
+            description: "gasto de pedidos por cliente"
+            tests:
+                - not_null 
+          - name: saldo_cuenta
+            description: "Saldo de la cuenta"
+            tests:
+                - accepted_values:
+                    values:
+                     - Positivo
+                     - Negativo   
+          - name: nombre_nacion
+            description: "Nombre del país al que pertenece el cliente"
+            tests:
+                - not_null   
+          - name: pedidos_pais
+            description: "numero medio de pedidos por segun el pais del cliente"
+            tests:
+                - not_null 
+          - name: gasto_medio_país
+            description: "Gasto medio del total de pedidos del cliente según el país"
+            tests:    
+    - name: final_orders
+      description: "Tabla final de información relevante de los pedidos"
+      columns:
+          - name: customer_id
+            description: "id del cliente, clave secundaria"
+            tests:
+             - relationships:
+                to: ref('dim_lineitem')
+                field: customer_id
+          - name: order_id
+            description: "Clave primaria de la tabla"
+            tests:
+             - relationships:
+                to: ref('fct_lineitem')
+                field: order_id
+          - name: sum_qty
+            description: "Cantidad de articulos del pedido"
+            tests:
+                - not_null 
+          - name: SUM_BASE_PRICE
+            description: "Precio total de la cantidad de articulos del pedido"
+            tests:
+                - not_null      
+          - name: SUM_DISC_PRICE
+            description: "Precio total de la cantidad de articulos del pedido con el descuento"
+            tests:
+                - not_null 
+          - name: SUM_FINAL
+            description: "Precio total de la cantidad de articulos del pedido con el descuento y el impuesto"
+            tests:
+                - not_null           
+          - name: AVG_QTY
+            description: "Cantidad media de artículos del pedido"
+            tests:   
+          - name: AVG_PRICE
+            description: "Precio medio de los articulos del pedido"
+            tests:
+          - name: AVG_DISC
+            description: "Descuento medio del pedido"
+            tests:
+                - not_null
+          - name: AVG_IMP
+            description: "Impuesto medio del pedido"
+            tests:
+                - not_null 
+          - name: COUNT_ART
+            description: "Cantidad de articulos del pedido"
+            tests:
+                - not_null
+          - name: FIRST_FECHA_ENVIO
+            description: "Primera fecha de envio del pedido"
+            tests:
+                - not_null      
+          - name: FECHA_MAS_RECIENTE
+            description: "Ultima fecha de entrega del pedido"
+            tests:
+                - not_null 
+          - name: DIAS_ENVIO
+            description: "Cantidad de dias total que tarda el cliente en recibir el pedido completo"
+            tests:
+                - not_null  
+    - name: min_partsupp
+      description: "Tabla de información de la relación artículo-proveedor"
+      columns:
+          - name: art_id
+            description: "id del artículo, clave secundaria"
+            tests:
+             - relationships:
+                to: ref('partsupp_min')
+                field: art_id
+          - name: proveedor_id
+            description: "id del proveedor, clave secundaria"
+            tests:
+             - relationships:
+                to: ref('partsupp_min')
+                field: proveedor_id 
+          - name: min_coste
+            description: "mínimo coste de suministro del articulo"
+            tests:
+                - not_null             

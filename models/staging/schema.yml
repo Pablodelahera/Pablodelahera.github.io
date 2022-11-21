@@ -1,0 +1,341 @@
+
+version: 2
+
+models:
+    - name: customer
+      description: "Tabla de información del cliente"
+      columns:
+          - name: id
+            description: "Clave primaria de la tabla"
+            tests:
+                - unique
+                - not_null
+          - name: nombre
+            description: "Nombre del cliente"
+            tests:
+                - unique
+                - not_null 
+          - name: direccion
+            description: "Direccion del cliente"
+            tests:
+                - not_null   
+          - name: nation_id
+            description: "Clave secundaria, id de nation"
+            tests:
+             - relationships:
+                to: ref('stg_nation')
+                field: nation_id
+          - name: telefono
+            description: "Telefono del cliente"
+            tests:
+                - unique
+                - not_null
+          - name: balance
+            description: "Saldo de la cuenta del cliente"
+            tests:
+                - not_null
+          - name: departamento
+            description: "Seccion a la que pertenece el cliente"
+            tests:
+             - accepted_values:
+                 values:
+                   - BUILDING
+                   - MACHINERY
+                   - HOUSEHOLD
+                   - FURNITURE
+                   - AUTOMOBILE
+          - name: comentario
+            description: "comentarios de interés"
+            tests:
+                - not_null     
+
+    - name: orders
+      description: "Tabla de información del pedido"
+      columns:
+          - name: id
+            description: "Clave primaria de la tabla"
+            tests:
+                - unique
+                - not_null
+          - name: customer_id
+            description: "id del cliente, clave secundaria"
+            tests:
+             - relationships:
+                to: ref('customer')
+                field: id 
+          - name: estado
+            description: "estado del pedido"
+            tests:
+                - accepted_values:
+                    values:
+                     - P
+                     - F
+                     - O 
+          - name: precio_total
+            description: "precio total del pedido"
+            tests:
+                - not_null
+          - name: fecha
+            description: "fecha del pedido"
+            tests:
+                - not_null
+          - name: prioridad
+            description: "nivel de prioridad del pedido"
+            tests:
+              - accepted_values:
+                  values:
+                   - 1-URGENT
+                   - 2-HIGH
+                   - 3-MEDIUM
+                   - 4-NOT SPECIFIED
+                   - 5-LOW
+          - name: empleado
+            description: "nombre del empleado que se encarga del pedido"
+            tests:
+                - not_null  
+          - name: envio_prioritario
+            description: "envio con prioridad"
+            tests:
+                - not_null                
+          - name: comentario
+            description: "comentarios de interés"
+            tests:
+                - not_null
+
+    - name: nation
+      description: "Tabla de información de los países"
+      columns:
+          - name: id
+            description: "Clave primaria de la tabla"
+            tests:
+                - unique
+                - not_null
+          - name: region_id
+            description: "id de la region(continente), clave secundaria"
+            tests:
+             - relationships:
+                to: ref('region')
+                field: id 
+          - name: nombre_nacion
+            description: "Nombre del país"
+            tests:
+                - not_null
+                - unique  
+          - name: comentario
+            description: "comentarios de interés"
+            tests:
+                - unique    
+                - not_null
+    - name: region
+      description: "Tabla de información de los continentes"
+      columns:
+          - name: id
+            description: "Clave primaria de la tabla"
+            tests:
+                - unique
+                - not_null
+          - name: nombre_region
+            description: "Nombre del continente"
+            tests:
+                - not_null
+                - unique  
+          - name: comentario
+            description: "comentarios de interés"
+            tests:
+                - not_null
+                - unique 
+    - name: supplier
+      description: "Tabla de información de los proveedores"
+      columns:
+          - name: id
+            description: "Clave primaria de la tabla"
+            tests:
+                - unique
+                - not_null
+          - name: nombre_prov
+            description: "Nombre del proveedor"
+            tests:
+                - not_null
+                - unique  
+          - name: direccion_prov
+            description: "Dirección del proveedor"
+            tests:
+                - not_null
+          - name: nation_id
+            description: "id del pais, clave secundaria"
+            tests:
+             - relationships:
+                to: ref('nation')
+                field: id    
+          - name: telefono_prov
+            description: "Telefono del proveedor"
+            tests:
+                - not_null
+                - unique  
+          - name: balance_prov
+            description: "Saldo de la cuenta del proveedor"
+            tests:
+                - not_null                       
+          - name: comentario
+            description: "comentarios de interés"
+            tests:
+                - not_null
+                - unique
+    - name: part
+      description: "Tabla de información de los articulos"
+      columns:
+          - name: id
+            description: "Clave primaria de la tabla"
+            tests:
+                - unique
+                - not_null
+          - name: nombre_art
+            description: "Nombre del artículo"
+            tests:
+                - not_null  
+          - name: grupo_manufactura
+            description: "Grupo de manufacturación al que pertenece"
+            tests:
+                - not_null
+          - name: marca
+            description: "Marca del artículo"
+            tests:
+                - not_null
+          - name: tipo_art
+            description: "Tipo de artículo"
+            tests:
+                - not_null 
+          - name: tamanho
+            description: "Tamaño del artículo"
+            tests:     
+          - name: contenedor_art
+            description: "Contenedor al que pertenece segun el tipo de artículo que sea"
+            tests:
+          - name: precio_venta
+            description: "Precio de venta al público"
+            tests:
+                - not_null                             
+          - name: comentario
+            description: "comentarios de interés"
+            tests:
+                - not_null     
+    - name: partsupp
+      description: "Tabla de información de la relación artículo-proveedor"
+      columns:
+          - name: art_id
+            description: "id del artículo, clave secundaria"
+            tests:
+             - relationships:
+                to: ref('part')
+                field: id
+          - name: proveedor_id
+            description: "id del proveedor, clave secundaria"
+            tests:
+             - relationships:
+                to: ref('suplier')
+                field: id  
+          - name: cantidad_disponible
+            description: "cantidad de un mismo articulo que dispone un proveedor concreto"
+            tests:
+                - not_null
+          - name: coste_suministro
+            description: "coste de suministro del articulo"
+            tests:
+                - not_null                       
+          - name: comentario
+            description: "comentarios de interés"
+            tests:
+                - not_null
+    - name: lineitem
+      description: "Tabla de información de los presupuestos"
+      columns:
+          - name: order_id
+            description: "id del pedido, clave secundaria"
+            tests:
+             - relationships:
+                to: ref('order')
+                field: id
+          - name: art_id
+            description: "id del artículo, clave secundaria"
+            tests:
+             - relationships:
+                to: ref('part')
+                field: id                
+          - name: proveedor_id
+            description: "id del proveedor, clave secundaria"
+            tests:
+             - relationships:
+                to: ref('suplier')
+                field: id  
+          - name: numero_presupuesto
+            description: "numero del presupuesto de un mismo pedido"
+            tests:
+                - not_null
+          - name: cantidad_art
+            description: "cantidad de un mismo articulo que tiene ese pedido"
+            tests:
+                - not_null   
+          - name: precio_art_cantid
+            description: "precio total del articulo según la cantidad"
+            tests:
+                - not_null
+          - name: descuento
+            description: "descuento aplicable"
+            tests:
+                - not_null
+          - name: impuesto
+            description: "impuesto aplicable"
+            tests:
+                - not_null
+          - name: devolucion
+            description: "devolucion del articulo"
+            tests:
+             - accepted_values:
+                 values:
+                   - A
+                   - N
+                   - R
+          - name: estado
+            description: "estado del articulo"
+            tests:
+             - accepted_values:
+                 values:
+                   - F
+                   - O
+          - name: fecha_envio
+            description: "fecha en la que se envio el articulo"
+            tests:
+                - not_null
+          - name: fecha_registro
+            description: "fecha en la que se registro la venta"
+            tests:
+                - not_null    
+          - name: fecha_entrega
+            description: "fecha en la que se recibió el articulo"
+            tests:
+                - not_null          
+          - name: instruccion_envio
+            description: "instrucciones de envio"
+            tests:
+             - accepted_values:
+                 values:
+                   - COLLECT COD
+                   - DELIVER IN PERSON
+                   - TAKE BACK RETURN
+                   - NONE   
+          - name: modo_envio
+            description: "modo de envio"
+            tests:
+             - accepted_values:
+                 values:
+                   - TRUCK
+                   - AIR
+                   - REG AIR
+                   - FOB
+                   - MAIL
+                   - SHIP
+                   - RAIL                                                                                 
+          - name: comentario
+            description: "comentarios de interés"
+            tests:
+                - not_null                                        
