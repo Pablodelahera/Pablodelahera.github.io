@@ -1,4 +1,4 @@
-{{ config(schema='AUX') }}
+{{ config(schema='AUX', unique_key = 'order_id') }}
 
     select
        order_id,

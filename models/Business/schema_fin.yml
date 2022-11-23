@@ -9,7 +9,7 @@ models:
             description: "Clave primaria de la tabla"
             tests:
              - relationships:
-                to: ref('fct_pre_customer')
+                to: ref('tr_fct_pre_customer')
                 field: id
           - name: nombre
             description: "Nombre del cliente"
@@ -55,13 +55,13 @@ models:
             description: "id del cliente, clave secundaria"
             tests:
              - relationships:
-                to: ref('fct_lineitem_dates')
+                to: ref('tr_fct_lineitem_dates')
                 field: customer_id
           - name: order_id
             description: "Clave primaria de la tabla"
             tests:
              - relationships:
-                to: ref('fct_lineitem_operations')
+                to: ref('tr_fct_lineitem_operations')
                 field: order_id
           - name: sum_qty
             description: "Cantidad de articulos del pedido"
@@ -113,16 +113,16 @@ models:
       description: "Tabla de información de la relación artículo-proveedor"
       columns:
           - name: art_id
-            description: "id del artículo, clave secundaria"
+            description: "id del artículo, clave primaria"
             tests:
              - relationships:
-                to: ref('fct_pre_partsupp')
+                to: ref('tr_fct_pre_partsupp')
                 field: art_id
           - name: proveedor_id
             description: "id del proveedor, clave secundaria"
             tests:
              - relationships:
-                to: ref('fct_pre_partsupp')
+                to: ref('tr_fct_pre_partsupp')
                 field: proveedor_id 
           - name: pais_proveedor
             description: "Nombre del país del proveedor"

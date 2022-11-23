@@ -1,4 +1,4 @@
-{{ config(schema='FIN') }}
+{{ config(schema='FIN', unique_key = 'id') }}
 
 select ID,
 NOMBRE_ART,

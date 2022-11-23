@@ -1,4 +1,4 @@
-{{ config(schema='FIN', unique_key = 'id') }}
+{{ config(schema='FIN') }}
 
 select c.ID, 
 c.NOMBRE,

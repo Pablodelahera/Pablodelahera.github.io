@@ -1,4 +1,4 @@
-{{ config(schema='AUX') }}
+{{ config(schema='AUX', unique_key = 'art_id') }}
 
 with prueba as(
     select art_id, 
