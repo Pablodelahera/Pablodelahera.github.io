@@ -1,4 +1,4 @@
-{{ config(schema='AUX') }}
+{{ config(schema='AUX', unique_key = 'id') }}
 
 with customer_order as(
     select
@@ -25,4 +25,4 @@ final as (
     order by id
 )
 
-select f.*, nr.nombre_nacion from final f left join {{ref('nation_region')}} nr on f.nation_id = nr.id
+select f.*, nr.nombre_nacion from final f left join {{ref('tr_nation_region')}} nr on f.nation_id = nr.id

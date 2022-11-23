@@ -1,4 +1,4 @@
-{{ config(schema='AUX') }}
+{{ config(schema='AUX', unique_key = 'order_id') }}
 
 with proceso as (
 select order_id,

@@ -46,12 +46,12 @@ models:
       stg_orders:
     transforming:
       +materialized: table
-      fct_pre_customer:  
-      nation_region:
-      fct_lineitem_dates:
-      fct_lineitem_operations:
-      fct_pre_partsupp:
-      fct_pedidos_pais:
+      tr_fct_pre_customer:  
+      tr_nation_region:
+      tr_fct_lineitem_dates:
+      tr_fct_lineitem_operations:
+      tr_fct_pre_partsupp:
+      tr_fct_pedidos_pais:
     Business:
       dim:
        +materialized: table

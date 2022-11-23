@@ -2,7 +2,7 @@
 version: 2
 
 models:
-    - name: fct_pre_customer
+    - name: tr_fct_pre_customer
       description: "Tabla de dimensión del cliente"
       columns:
           - name: id
@@ -47,7 +47,7 @@ models:
             description: "Nombre del país al que pertenece el cliente"
             tests:
                 - not_null   
-    - name: fct_lineitem_operations
+    - name: tr_fct_lineitem_operations
       description: "Tabla de resultados relevantes de los pedidos"
       columns:
           - name: order_id
@@ -90,7 +90,7 @@ models:
             description: "Cantidad de articulos del pedido"
             tests:
                 - not_null   
-    - name: fct_lineitem_dates
+    - name: tr_fct_lineitem_dates
       description: "Tabla de fechas de pedido-cliente"
       columns:
           - name: customer_id
@@ -100,7 +100,7 @@ models:
                 to: ref('stg_customer')
                 field: id
           - name: order_id
-            description: "id del pedido, clave secundaria"
+            description: "id del pedido, clave primaria"
             tests:
              - relationships:
                 to: ref('stg_orders')
@@ -121,7 +121,7 @@ models:
             description: "Cantidad de dias total que tarda el cliente en recibir el pedido completo"
             tests:
                 - not_null 
-    - name: nation_region
+    - name: tr_nation_region
       description: "Tabla de nación-region"
       columns:                      
           - name: id
@@ -145,11 +145,11 @@ models:
             description: "Nombre del continente"
             tests:
                 - not_null                
-    - name: fct_pre_partsupp
+    - name: tr_fct_pre_partsupp
       description: "Tabla de información de la relación artículo-proveedor"
       columns:
           - name: art_id
-            description: "id del artículo, clave secundaria"
+            description: "id del artículo, clave primaria"
             tests:
              - relationships:
                 to: ref('stg_partsupp')
@@ -164,11 +164,11 @@ models:
             description: "mínimo coste de suministro del articulo"
             tests:
                 - not_null    
-    - name: fct_pedidos_pais
+    - name: tr_fct_pedidos_pais
       description: "Tabla de información relevante de los pedidos de los países"
       columns:
           - name: nombre_nacion
-            description: "nombre del país"
+            description: "nombre del país, clave primaria de la tabla"
             tests:
                 - not_null
                 - unique
