@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+  - name: staging
+    database: PRICE_PARITY
+    schema: PUBLIC
+    tables:
+      - name: D_PRODUCT_CRM
+      - name: D_USER
+      - name: F_STORE_AUDITOR
+      - name: F_TARGETS
+      - name: D_ACCOUNT
+      - name: FLAT_FILE
